@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: cdn
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: cdn
+
+  template:
+    metadata:
+      labels:
+        app: cdn
+
+    spec:
+      containers:
+      - name: cdn
+        image: simple-cdn
+        imagePullPolicy: Never
+
+        ports:
+        - containerPort: 80
+
+        volumeMounts:
+        - name: static-volume
+          mountPath: /www
+
+      volumes:
+      - name: static-volume
+        hostPath:
+          path: /static
